@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - StockManager{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+{% block content %}
+<div class="mb-4">
+    <h2 class="fw-bold">Dashboard</h2>
+    <p class="text-muted">Here's what's happening with your business today.</p>
+</div>
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+
+                <p class="text-muted mb-1">Total Products</p>
+                <h3 class="fw-bold">{{ total_products }}</h3><small class="text-muted">products in your inventory</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-muted mb-1">Total Stock</p>
+                <h3 class="fw-bold">{{ total_stock }}</h3><small class="text-success">Stock is healthy</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-muted mb-1">Today's Sales</p>
+                <h3 class="fw-bold">{{ today_sales }}</h3><small class="text-muted">sales recorded today</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-muted mb-1">Low Stock Items</p>
+                <h3 class="fw-bold">{{ low_stock }}</h3><small class="text-danger">Needs attention</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-muted mb-1">Total Customers</p>
+                <h3 class="fw-bold">{{ total_customers }}</h3>
+                <small class="text-muted">Registered customers</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-muted mb-1">Total Sales</p>
+                <h3 class="fw-bold">{{ total_sales }}</h3>
+                <small class="text-muted">Completed sales</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-muted mb-1">Total Revenue</p>
+                <h3 class="fw-bold">₹{{ total_revenue }}</h3>
+                <small class="text-muted">Total sales revenue</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-muted mb-1">Pending Payments</p>
+                <h3 class="fw-bold">{{ pending_payments }}</h3>
+                <small class="text-warning">Payments pending</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card border-0 shadow-sm mt-4">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Recent Sales</h5>
+            <a href="{% url 'sales' %}" class="btn btn-sm btn-outline-primary">
+                View All
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Customer</th>
+                        <th>Quantity</th>
+                        <th>Total Amount</th>
+                        <th>Payment Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for sale in recent_sales %}
+                    <tr>
+                        <td>{{ sale.product.name }}</td>
+                        <td>{{ sale.customer_name }}</td>
+                        <td>{{ sale.quantity }}</td>
+                        <td>₹{{ sale.total_amount }}</td>
+
+                        <td>
+                            {% if sale.payment_status == "Paid" %}
+                                <span class="badge bg-success">Paid</span>
+                            {% elif sale.payment_status == "Pending" %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% elif sale.payment_status == "Partial" %}
+                                <span class="badge bg-info text-dark">Partial</span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ sale.sale_date|date:"d M Y" }}</td>
+                    </tr>
+
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">
+                            No sales recorded yet.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm mt-4">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Low Stock Products</h5>
+            <a href="{% url 'inventory' %}" class="btn btn-sm btn-outline-primary">
+                View Inventory
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>SKU</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for product in low_stock_products %}
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.category|default:"-" }}</td>
+                        <td>{{ product.sku|default:"-" }}</td>
+                        <td>{{ product.quantity }}</td>
+                        <td>
+                            {% if product.quantity == 0 %}
+                                <span class="badge bg-danger">Out of Stock</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Low Stock</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-success">
+                            All products have sufficient stock.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="card border-0 shadow-sm mt-4">
+    <div class="card-body">
+        <h5 class="fw-bold mb-3">Sales Analytics - Last 7 Days</h5>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Sales Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for day in last_7_days %}
+                    <tr>
+                        <td>{{ day.date }}</td>
+                        <td>₹{{ day.amount }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="text-center text-muted">
+                            No sales data available.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

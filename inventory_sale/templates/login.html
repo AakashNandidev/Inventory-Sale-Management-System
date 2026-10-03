@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - StockManager</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f5f7fb;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 430px;
+            padding: 20px;
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .brand h2 {
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .brand p {
+            color: #6c757d;
+        }
+
+        .login-card {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-label {
+            font-weight: 500;
+        }
+
+        .form-control {
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .bottom-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #6c757d;
+        }
+
+        .bottom-text a {
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="brand">
+        <h2>StockManager</h2>
+        <p>Manage your inventory and sales with ease.</p>
+    </div>
+
+    <div class="login-card">
+
+        <h4 class="text-center mb-4">Welcome Back</h4>
+
+        <form method="POST">
+
+            {% csrf_token %}             
+
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input
+                    type="text"
+                    name="username"
+                    class="form-control"
+                    placeholder="Enter your username"
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    class="form-control"
+                    placeholder="Enter your password"
+                    required>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+
+                <a href="#" class="text-decoration-none">
+                    Forgot password?
+                </a>
+            </div>
+
+            <button type="submit" class="btn btn-primary login-btn">
+                Login
+            </button>
+
+        </form>
+
+        <div class="bottom-text">
+            Don't have an account?
+            <a href="{% url 'register' %}">Create Account</a>
+        </div>
+
+    </div>
+
+    <a href="{% url 'home' %}" class="home-link">
+        ← Back to Home
+    </a>
+
+</div>
+
+</body>
+</html>

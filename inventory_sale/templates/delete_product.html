@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Product - StockManager{% endblock %}
+{% block page_title %}Delete Product{% endblock %}
+
+{% block content %}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+
+        <h3 class="fw-bold">Delete Product</h3>
+
+        <p>
+            Are you sure you want to delete
+            <strong>{{ product.name }}</strong>?
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <button type="submit" class="btn btn-danger">
+                Yes, Delete
+            </button>
+
+            <a href="{% url 'inventory' %}" class="btn btn-light ms-2">
+                Cancel
+            </a>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

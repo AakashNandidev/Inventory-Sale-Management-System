@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Customers - StockManager{% endblock %}
+{% block page_title %}Customers{% endblock %}
+{% block nav_customers %}active{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold">Customers</h2>
+        <p class="text-muted">Manage your customers.</p>
+    </div>
+    <form method="GET" class="d-flex mb-3">
+        <input type="text" name="search" class="form-control me-2" placeholder="Search customer by name"
+            value="{{ request.GET.search }}">
+
+        <button type="submit" class="btn btn-primary">
+            Search
+        </button>
+    </form>
+    <a href="{% url 'add_customer' %}" class="btn btn-primary">
+        <i class="bi bi-plus"></i> Add Customer
+    </a>
+</div>
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Total Purchases</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for customer in customers %}
+
+                <tr>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.email|default:"-" }}</td>
+                    <td>{{ customer.phone|default:"-" }}</td>
+                    <td>₹{{ customer.total_purchases|default:"0" }}</td>
+                    <td><a href="{% url 'edit_customer' customer.id %}" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="{% url 'delete_customer' customer.id %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="4" class="text-center text-muted">
+                        No customers added yet.
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+        </table>
+        {% if page_obj.paginator.num_pages > 1 %}
+<div class="d-flex justify-content-between align-items-center mt-4">
+
+    <div>
+        Showing page {{ page_obj.number }}
+        of {{ page_obj.paginator.num_pages }}
+    </div>
+
+    <nav>
+        <ul class="pagination mb-0">
+
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?search={{ request.GET.search|default:'' }}&page={{ page_obj.previous_page_number }}">
+                        Previous
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                    <a class="page-link"
+                       href="?search={{ request.GET.search|default:'' }}&page={{ num }}">
+                        {{ num }}
+                    </a>
+                </li>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?search={{ request.GET.search|default:'' }}&page={{ page_obj.next_page_number }}">
+                        Next
+                    </a>
+                </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+
+</div>
+{% endif %}
+    </div>
+</div>
+
+{% endblock %}

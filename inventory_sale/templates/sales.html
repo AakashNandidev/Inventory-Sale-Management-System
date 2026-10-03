@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Sales - StockManager{% endblock %}
+{% block page_title %}Sales{% endblock %}
+{% block nav_sales %}active{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold">Sales</h2>
+        <p class="text-muted">View and manage your sales.</p>
+    </div><a href="/sales/new/" class="btn btn-primary"><i class="bi bi-plus"></i> New Sale</a>
+</div>
+<div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Invoice</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for sale in sales %}
+                <tr>
+                    <td>#INV-{{ sale.id }}</td>
+                    <td>{{ sale.customer_name }}</td>
+                    <td>{{ sale.sale_date|date:"d M Y" }}</td>
+                    <td>₹{{ sale.total_amount }}</td>
+                    <td>
+                        {% if sale.payment_status == "Paid" %}
+                        <span class="badge bg-success">Paid</span>
+
+                        {% elif sale.payment_status == "Pending" %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+
+                        {% elif sale.payment_status == "Partial" %}
+                        <span class="badge bg-info text-dark">Partial</span>
+
+                        {% endif %}
+                    </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">
+                        No sales recorded yet.
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        {% if page_obj.paginator.num_pages > 1 %}
+<div class="d-flex justify-content-between align-items-center mt-4">
+
+    <div>
+        Showing page {{ page_obj.number }}
+        of {{ page_obj.paginator.num_pages }}
+    </div>
+
+    <nav>
+        <ul class="pagination mb-0">
+
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page={{ page_obj.previous_page_number }}">
+                        Previous
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                    <a class="page-link"
+                       href="?page={{ num }}">
+                        {{ num }}
+                    </a>
+                </li>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page={{ page_obj.next_page_number }}">
+                        Next
+                    </a>
+                </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+
+</div>
+{% endif %}
+    </div>
+</div>
+
+{% endblock %}

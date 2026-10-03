@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Invoice #INV-{{ sale.id }} - StockManager{% endblock %}
+{% block page_title %}Invoice{% endblock %}
+{% block nav_invoices %}active{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold">Invoice #INV-{{ sale.id }}</h2>
+        <p class="text-muted">Invoice details</p>
+    </div>
+
+    <div>
+        <a href="{% url 'invoices' %}" class="btn btn-light me-2">
+            Back to Invoices
+        </a>
+
+        <button onclick="window.print()" class="btn btn-primary">
+            Print Invoice
+        </button>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+
+        <div class="row mb-4">
+
+            <div class="col-md-6">
+                <h3 class="fw-bold">StockManager</h3>
+                <p class="text-muted mb-0">
+                    Inventory & Sales Management System
+                </p>
+            </div>
+
+            <div class="col-md-6 text-md-end">
+                <strong>Invoice:</strong> #INV-{{ sale.id }}<br>
+                <strong>Date:</strong>
+                {{ sale.sale_date|date:"d M Y, h:i A" }}
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="mb-4">
+            <h5 class="fw-bold">Bill To</h5>
+            <p class="mb-0">{{ sale.customer_name }}</p>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Selling Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>{{ sale.product.name }}</td>
+                        <td>{{ sale.quantity }}</td>
+                        <td>₹{{ sale.selling_price }}</td>
+                        <td>₹{{ sale.total_amount }}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+        <div class="text-end mt-4">
+            <h4 class="fw-bold">
+                Total: ₹{{ sale.total_amount }}
+            </h4>
+
+            {% if sale.payment_status == "Paid" %}
+            <span class="badge bg-success">Paid</span>
+
+            {% elif sale.payment_status == "Pending" %}
+            <span class="badge bg-warning text-dark">Pending</span>
+
+            {% elif sale.payment_status == "Partial" %}
+            <span class="badge bg-info text-dark">Partial</span>
+            {% endif %}
+        </div>
+
+        <hr>
+
+        <p class="text-center text-muted mb-0">
+            Thank you for your business!
+        </p>
+
+    </div>
+</div>
+
+{% endblock %}

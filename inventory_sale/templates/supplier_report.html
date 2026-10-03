@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% block title %}Supplier Report - StockManager{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Header -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2>Supplier Report</h2>
+
+            <p class="text-muted">
+                Overview of suppliers and their supplied products.
+            </p>
+        </div>
+        <a href="{% url 'export_supplier_excel' %}" class="btn btn-success">
+    Export to Excel
+</a>
+        <div>
+
+            <button onclick="window.print()" class="btn btn-dark">
+                🖨 Print Report
+            </button>
+
+            <a href="{% url 'reports' %}" class="btn btn-outline-secondary">
+                ← Back to Reports
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Summary Cards -->
+
+    <div class="row mb-4">
+
+        <!-- Total Suppliers -->
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Total Suppliers
+                    </h6>
+
+                    <h2>
+                        {{ total_suppliers }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Total Products -->
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Supplied Products
+                    </h6>
+
+                    <h2>
+                        {{ total_products }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Total Stock -->
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Stock From Suppliers
+                    </h6>
+
+                    <h2>
+                        {{ total_stock }}
+                    </h2>
+
+                    <small class="text-muted">
+                        Units
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Supplier Table -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <h5 class="mb-3">
+                Supplier Summary
+            </h5>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover table-bordered">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+                            <th>Supplier</th>
+                            <th>Company</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Total Products</th>
+                            <th>Total Stock</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for supplier in suppliers %}
+
+                        <tr>
+
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+
+                            <td>
+                                <strong>
+                                    {{ supplier.name }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ supplier.company|default:"-" }}
+                            </td>
+
+                            <td>
+                                {{ supplier.phone|default:"-" }}
+                            </td>
+
+                            <td>
+                                {{ supplier.email|default:"-" }}
+                            </td>
+
+                            <td>
+                                {{ supplier.total_products }}
+                            </td>
+
+                            <td>
+                                {{ supplier.total_stock|default:0 }}
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="7" class="text-center">
+                                No suppliers found.
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Print CSS -->
+
+<style>
+
+@media print {
+
+    nav,
+    .navbar,
+    button,
+    a {
+        display: none !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+
+    body {
+        font-size: 12px;
+    }
+
+}
+
+</style>
+
+{% endblock %}

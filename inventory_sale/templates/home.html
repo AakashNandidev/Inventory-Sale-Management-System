@@ -1,0 +1,1072 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>StockManager | Inventory & Sales Management</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #212529;
+            background: #ffffff;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            padding: 18px 0;
+            background: #ffffff;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: bold;
+            color: #212529;
+            text-decoration: none;
+        }
+
+        .brand i {
+            margin-right: 8px;
+        }
+
+        .nav-link {
+            color: #495057 !important;
+            margin: 0 8px;
+        }
+
+        .nav-link:hover {
+            color: #000000 !important;
+        }
+
+        .login-btn {
+            border: 1px solid #212529;
+            padding: 8px 20px;
+            border-radius: 7px;
+            text-decoration: none;
+            color: #212529;
+            margin-right: 8px;
+        }
+
+        .login-btn:hover {
+            background: #212529;
+            color: white;
+        }
+
+        .signup-btn {
+            background: #212529;
+            color: white;
+            padding: 9px 20px;
+            border-radius: 7px;
+            text-decoration: none;
+        }
+
+        .signup-btn:hover {
+            background: #343a40;
+            color: white;
+        }
+
+
+        /* ================= HERO ================= */
+
+        .hero {
+            background: #f5f6fa;
+            padding: 90px 0;
+        }
+
+        .hero h1 {
+            font-size: 52px;
+            font-weight: 700;
+            line-height: 1.15;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #6c757d;
+            line-height: 1.7;
+            margin-top: 20px;
+        }
+
+        .hero-buttons {
+            margin-top: 30px;
+        }
+
+        .primary-btn {
+            background: #212529;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 7px;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .primary-btn:hover {
+            background: #343a40;
+            color: white;
+        }
+
+        .secondary-btn {
+            border: 1px solid #adb5bd;
+            color: #212529;
+            padding: 12px 25px;
+            border-radius: 7px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .secondary-btn:hover {
+            background: white;
+        }
+
+
+        /* ================= DASHBOARD PREVIEW ================= */
+
+        .dashboard-preview {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.12);
+            margin-top: 20px;
+        }
+
+        .preview-top {
+            height: 35px;
+            border-bottom: 1px solid #dee2e6;
+            margin-bottom: 20px;
+        }
+
+        .preview-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #adb5bd;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .preview-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .preview-number {
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .preview-label {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .preview-table {
+            height: 12px;
+            background: #dee2e6;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+
+        /* ================= FEATURES ================= */
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .section-title p {
+            color: #6c757d;
+            margin-top: 12px;
+        }
+
+        .feature-card {
+            padding: 30px;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            height: 100%;
+            transition: 0.2s;
+        }
+
+        .feature-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transform: translateY(-3px);
+        }
+
+        .feature-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 10px;
+            background: #212529;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h5 {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+
+        /* ================= STATS ================= */
+
+        .stats {
+            background: #212529;
+            color: white;
+            padding: 65px 0;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat h2 {
+            font-size: 38px;
+            font-weight: bold;
+        }
+
+        .stat p {
+            color: #adb5bd;
+            margin-top: 5px;
+        }
+
+
+        /* ================= HOW IT WORKS ================= */
+
+        .step {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .step-number {
+            width: 55px;
+            height: 55px;
+            background: #212529;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .step h5 {
+            margin-top: 20px;
+        }
+
+        .step p {
+            color: #6c757d;
+        }
+
+
+        /* ================= CTA ================= */
+
+        .cta {
+            background: #f5f6fa;
+            padding: 75px 0;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .cta p {
+            color: #6c757d;
+            margin: 15px 0 25px;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #212529;
+            color: white;
+            padding: 45px 0 25px;
+        }
+
+        footer h5 {
+            margin-bottom: 15px;
+        }
+
+        footer p {
+            color: #adb5bd;
+        }
+
+        footer a {
+            color: #adb5bd;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
+        .copyright {
+            border-top: 1px solid #343a40;
+            margin-top: 30px;
+            padding-top: 20px;
+            color: #adb5bd;
+            font-size: 14px;
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 768px) {
+
+            .hero {
+                padding: 60px 0;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .dashboard-preview {
+                margin-top: 45px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar navbar-expand-lg">
+
+    <div class="container">
+
+        <a href="#" class="brand">
+
+            <i class="bi bi-box-seam"></i>
+
+            StockManager
+
+        </a>
+
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMenu">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+        <div class="collapse navbar-collapse" id="navbarMenu">
+
+            <ul class="navbar-nav mx-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#features">
+                        Features
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#how">
+                        How It Works
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">
+                        About
+                    </a>
+                </li>
+
+            </ul>
+
+
+            <div>
+
+                <a href="{% url 'login' %}" class="login-btn">
+                    Login
+                </a>
+
+                <a href="{% url 'register' %}" class="signup-btn">
+                    Get Started
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6">
+
+                <h1>
+                    Manage your inventory
+                    and sales with ease.
+                </h1>
+
+                <p>
+                    A simple and powerful inventory and sales
+                    management system designed to help businesses
+                    track products, manage stock, record sales
+                    and understand their business performance.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="{% url 'login' %}" class="primary-btn">
+                        Start Managing
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+
+                    <a href="dashboard.html"
+                       class="secondary-btn">
+
+                        Explore Features
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Dashboard preview -->
+
+            <div class="col-lg-6">
+
+                <div class="dashboard-preview">
+
+                    <div class="preview-top">
+
+                        <span class="preview-dot"></span>
+                        <span class="preview-dot"></span>
+                        <span class="preview-dot"></span>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="col-6">
+
+                            <div class="preview-card">
+
+                                <div class="preview-label">
+                                    Total Products
+                                </div>
+
+                                <div class="preview-number">
+                                    248
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-6">
+
+                            <div class="preview-card">
+
+                                <div class="preview-label">
+                                    Total Stock
+                                </div>
+
+                                <div class="preview-number">
+                                    1,542
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-6">
+
+                            <div class="preview-card">
+
+                                <div class="preview-label">
+                                    Today's Sales
+                                </div>
+
+                                <div class="preview-number">
+                                    ₹24,850
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-6">
+
+                            <div class="preview-card">
+
+                                <div class="preview-label">
+                                    Low Stock
+                                </div>
+
+                                <div class="preview-number">
+                                    12
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <h6 class="mt-3">
+                        Recent Sales
+                    </h6>
+
+                    <div class="preview-table"></div>
+                    <div class="preview-table"></div>
+                    <div class="preview-table"></div>
+                    <div class="preview-table"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="section" id="features">
+
+    <div class="container">
+
+        <div class="section-title">
+
+            <h2>
+                Everything you need to manage your business
+            </h2>
+
+            <p>
+                Keep your inventory, sales and customers
+                organized in one place.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-box"></i>
+                    </div>
+
+                    <h5>
+                        Inventory Management
+                    </h5>
+
+                    <p>
+                        Add products, manage categories,
+                        monitor stock levels and identify
+                        low-stock items quickly.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-cart-check"></i>
+                    </div>
+
+                    <h5>
+                        Sales Management
+                    </h5>
+
+                    <p>
+                        Record sales transactions, manage
+                        orders and automatically keep track
+                        of inventory changes.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-receipt"></i>
+                    </div>
+
+                    <h5>
+                        Invoices
+                    </h5>
+
+                    <p>
+                        Create and manage professional
+                        invoices for your customers.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-people"></i>
+                    </div>
+
+                    <h5>
+                        Customer Management
+                    </h5>
+
+                    <p>
+                        Store customer information and
+                        easily view their purchase history.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-truck"></i>
+                    </div>
+
+                    <h5>
+                        Supplier Management
+                    </h5>
+
+                    <p>
+                        Manage supplier information and
+                        keep track of your product sources.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-bar-chart"></i>
+                    </div>
+
+                    <h5>
+                        Reports & Analytics
+                    </h5>
+
+                    <p>
+                        Understand sales, inventory and
+                        business performance through useful
+                        reports.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= STATS ================= -->
+
+<section class="stats">
+
+    <div class="container">
+
+        <div class="row">
+
+
+            <div class="col-md-3 col-6">
+
+                <div class="stat">
+
+                    <h2>248+</h2>
+
+                    <p>
+                        Products Managed
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3 col-6">
+
+                <div class="stat">
+
+                    <h2>1.5K+</h2>
+
+                    <p>
+                        Stock Items
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3 col-6 mt-4 mt-md-0">
+
+                <div class="stat">
+
+                    <h2>500+</h2>
+
+                    <p>
+                        Sales Recorded
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3 col-6 mt-4 mt-md-0">
+
+                <div class="stat">
+
+                    <h2>24/7</h2>
+
+                    <p>
+                        System Access
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= HOW IT WORKS ================= -->
+
+<section class="section" id="how">
+
+    <div class="container">
+
+        <div class="section-title">
+
+            <h2>
+                How it works
+            </h2>
+
+            <p>
+                Manage your business in a few simple steps.
+            </p>
+
+        </div>
+
+
+        <div class="row">
+
+
+            <div class="col-md-4">
+
+                <div class="step">
+
+                    <div class="step-number">
+                        1
+                    </div>
+
+                    <h5>
+                        Add Products
+                    </h5>
+
+                    <p>
+                        Add your products, categories,
+                        prices and stock quantities.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="step">
+
+                    <div class="step-number">
+                        2
+                    </div>
+
+                    <h5>
+                        Record Sales
+                    </h5>
+
+                    <p>
+                        Create sales and invoices whenever
+                        a customer purchases a product.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="step">
+
+                    <div class="step-number">
+                        3
+                    </div>
+
+                    <h5>
+                        Track Your Business
+                    </h5>
+
+                    <p>
+                        Monitor inventory, sales and reports
+                        from your dashboard.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= CTA ================= -->
+
+<section class="cta" id="about">
+
+    <div class="container">
+
+        <h2>
+            Ready to manage your inventory?
+        </h2>
+
+        <p>
+            Start organizing your products and sales
+            from one simple system.
+        </p>
+
+        <a href="#" class="primary-btn">
+            Get Started
+            <i class="bi bi-arrow-right"></i>
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="container">
+
+        <div class="row">
+
+
+            <div class="col-md-5">
+
+                <h5>
+                    <i class="bi bi-box-seam"></i>
+                    StockManager
+                </h5>
+
+                <p>
+                    Inventory and sales management
+                    made simple for growing businesses.
+                </p>
+
+            </div>
+
+
+            <div class="col-md-2">
+
+                <h6>
+                    Product
+                </h6>
+
+                <a href="#features">
+                    Features
+                </a>
+
+                <a href="#how">
+                    How It Works
+                </a>
+
+            </div>
+
+
+            <div class="col-md-2">
+
+                <h6>
+                    Management
+                </h6>
+
+                <a href="#">
+                    Inventory
+                </a>
+
+                <a href="#">
+                    Sales
+                </a>
+
+                <a href="#">
+                    Reports
+                </a>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <h6>
+                    Contact
+                </h6>
+
+                <p>
+                    support@stockmanager.com
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="copyright">
+
+            © 2026 StockManager.
+            Inventory & Sales Management System.
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Reports - StockManager{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Reports</h2>
+
+    <p class="text-muted">
+        View and analyze your business data.
+    </p>
+
+    <div class="row mt-4">
+
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5>📊 Sales Report</h5>
+                <p>View sales, products, customers and payment status.</p>
+                <a href="{% url 'sales_report' %}" class="btn btn-primary">View Report</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5>📦 Inventory Report</h5>
+                <p>View stock levels and low-stock products.</p>
+                <a href="{% url 'inventory_report' %}" class="btn btn-primary">View Report</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5>👥 Customer Report</h5>
+                <p>View customers and their purchase information.</p>
+                <a href="{% url 'customer_report' %}" class="btn btn-primary">View Report</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5>🚚 Supplier Report</h5>
+                <p>View supplier information and products.</p>
+                <a href="{% url 'supplier_report' %}" class="btn btn-primary">View Report</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5>💰 Revenue Report</h5>
+                <p>Analyze your sales revenue.</p>
+                <a href="{% url 'revenue_report' %}" class="btn btn-primary">View Report</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card p-3">
+                <h5>💳 Pending Payments</h5>
+                <p>View pending and partial payments.</p>
+                <a href="{% url 'pending_payments_report' %}" class="btn btn-primary">View Report</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

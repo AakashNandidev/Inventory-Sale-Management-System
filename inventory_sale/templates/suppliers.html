@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Suppliers - StockManager{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">Suppliers</h2>
+            <p class="text-muted">Manage your suppliers</p>
+        </div>
+
+        <a href="{% url 'add_suppliers' %}" class="btn btn-primary">
+            + Add Supplier
+        </a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Supplier Name</th>
+                            <th>Company</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for supplier in suppliers %}
+                        <tr>
+                            <td>{{ supplier.name }}</td>
+                            <td>{{ supplier.company|default:"-" }}</td>
+                            <td>{{ supplier.email|default:"-" }}</td>
+                            <td>{{ supplier.phone|default:"-" }}</td>
+                            <td>{{ supplier.address|default:"-" }}</td>
+                            <td>
+                                <a href="{% url 'edit_supplier' supplier.id %}" class="btn btn-sm btn-primary">
+                                    Edit
+                                </a>
+
+                                <a href="{% url 'delete_supplier' supplier.id %}" class="btn btn-sm btn-danger">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">
+                                No suppliers added yet.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+                {% if page_obj.paginator.num_pages > 1 %}
+<div class="d-flex justify-content-between align-items-center mt-4">
+
+    <div>
+        Showing page {{ page_obj.number }}
+        of {{ page_obj.paginator.num_pages }}
+    </div>
+
+    <nav>
+        <ul class="pagination mb-0">
+
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page={{ page_obj.previous_page_number }}">
+                        Previous
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                    <a class="page-link"
+                       href="?page={{ num }}">
+                        {{ num }}
+                    </a>
+                </li>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="?page={{ page_obj.next_page_number }}">
+                        Next
+                    </a>
+                </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+
+</div>
+{% endif %}
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,397 @@
+{% extends 'base.html' %}
+
+{% block title %}Revenue Report - StockManager{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Header -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2>Revenue Report</h2>
+
+            <p class="text-muted">
+                Overview of sales revenue and payment status.
+            </p>
+        </div>
+        <a href="{% url 'export_revenue_excel' %}" class="btn btn-success">
+    Export to Excel
+</a>
+        <div>
+
+            <button onclick="window.print()" class="btn btn-dark">
+                🖨 Print Report
+            </button>
+
+            <a href="{% url 'reports' %}" class="btn btn-outline-secondary">
+                ← Back to Reports
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Summary Cards -->
+
+    <div class="row mb-4">
+
+        <!-- Total Revenue -->
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Total Revenue
+                    </h6>
+
+                    <h2>
+                        ₹{{ total_revenue|floatformat:2 }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Total Sales -->
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Total Sales
+                    </h6>
+
+                    <h2>
+                        {{ total_sales }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Average Sale -->
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Average Sale Value
+                    </h6>
+
+                    <h2>
+                        ₹{{ average_sale|floatformat:2 }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Payment Status -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h5 class="mb-3">
+                Payment Status
+            </h5>
+
+            <div class="row">
+
+                <div class="col-md-4">
+
+                    <div class="p-3 border rounded">
+
+                        <h6 class="text-muted">
+                            Paid Sales
+                        </h6>
+
+                        <h3>
+                            {{ paid_sales }}
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="p-3 border rounded">
+
+                        <h6 class="text-muted">
+                            Pending Sales
+                        </h6>
+
+                        <h3>
+                            {{ pending_sales }}
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="p-3 border rounded">
+
+                        <h6 class="text-muted">
+                            Partial Payments
+                        </h6>
+
+                        <h3>
+                            {{ partial_sales }}
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Daily Revenue -->
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <h5 class="mb-3">
+                Daily Revenue
+            </h5>
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead>
+
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Revenue</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for date, revenue in daily_revenue %}
+
+                        <tr>
+
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+
+                            <td>
+                                {{ date|date:"d M Y" }}
+                            </td>
+
+                            <td>
+                                ₹{{ revenue|floatformat:2 }}
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="3" class="text-center">
+                                No revenue data available.
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Sales Revenue Details -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <h5 class="mb-3">
+                Revenue Details
+            </h5>
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-hover">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+                            <th>Invoice</th>
+                            <th>Date</th>
+                            <th>Product</th>
+                            <th>Customer</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th>Payment Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for sale in sales %}
+
+                        <tr>
+
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+
+                            <td>
+                                #INV-{{ sale.id }}
+                            </td>
+
+                            <td>
+                                {{ sale.sale_date|date:"d M Y" }}
+                            </td>
+
+                            <td>
+                                {{ sale.product.name }}
+                            </td>
+
+                            <td>
+
+                                {% if sale.customer %}
+                                    {{ sale.customer.name }}
+                                {% else %}
+                                    {{ sale.customer_name|default:"-" }}
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                {{ sale.quantity }}
+                            </td>
+
+                            <td>
+                                ₹{{ sale.total_amount|floatformat:2 }}
+                            </td>
+
+                            <td>
+
+                                {% if sale.payment_status == "Paid" %}
+
+                                    <span class="badge bg-success">
+                                        Paid
+                                    </span>
+
+                                {% elif sale.payment_status == "Pending" %}
+
+                                    <span class="badge bg-danger">
+                                        Pending
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        Partial
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="8" class="text-center">
+                                No sales found.
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Print CSS -->
+
+<style>
+
+@media print {
+
+    nav,
+    .navbar,
+    button,
+    a {
+        display: none !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+
+    body {
+        font-size: 12px;
+    }
+
+}
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+
+{% block title %}Pending Payments - StockManager{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Header -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2>Pending Payments Report</h2>
+
+            <p class="text-muted">
+                Overview of unpaid and partially paid sales.
+            </p>
+        </div>
+        <a href="{% url 'export_pending_payments_excel' %}" class="btn btn-success">
+    Export to Excel
+</a>
+        <div>
+
+            <button onclick="window.print()" class="btn btn-dark">
+                🖨 Print Report
+            </button>
+
+            <a href="{% url 'reports' %}" class="btn btn-outline-secondary">
+                ← Back to Reports
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Summary -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-6 mb-3">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Pending Sales
+                    </h6>
+
+                    <h2>
+                        {{ pending_count }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 mb-3">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Outstanding Amount
+                    </h6>
+
+                    <h2>
+                        ₹{{ total_pending|floatformat:2 }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Pending Payments Table -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <h5 class="mb-3">
+                Outstanding Payments
+            </h5>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover table-bordered">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+                            <th>Invoice</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Amount</th>
+                            <th>Payment Status</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for sale in pending_sales %}
+
+                        <tr>
+
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+
+                            <td>
+                                #INV-{{ sale.id }}
+                            </td>
+
+                            <td>
+                                {{ sale.sale_date|date:"d M Y" }}
+                            </td>
+
+                            <td>
+
+                                {% if sale.customer %}
+
+                                    {{ sale.customer.name }}
+
+                                {% else %}
+
+                                    {{ sale.customer_name|default:"-" }}
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                {{ sale.product.name }}
+                            </td>
+
+                            <td>
+                                {{ sale.quantity }}
+                            </td>
+
+                            <td>
+                                ₹{{ sale.total_amount|floatformat:2 }}
+                            </td>
+
+                            <td>
+
+                                {% if sale.payment_status == "Pending" %}
+
+                                    <span class="badge bg-danger">
+                                        Pending
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        Partial
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="8" class="text-center">
+
+                                <strong>No pending payments.</strong>
+
+                                <br>
+
+                                <small class="text-muted">
+                                    All payments are currently cleared.
+                                </small>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Print CSS -->
+
+<style>
+
+@media print {
+
+    nav,
+    .navbar,
+    button,
+    a {
+        display: none !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+
+    body {
+        font-size: 12px;
+    }
+
+}
+
+</style>
+
+{% endblock %}

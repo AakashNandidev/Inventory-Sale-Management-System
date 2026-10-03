@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+
+{% block title %}Customer Report - StockManager{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Header -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2>Customer Report</h2>
+
+            <p class="text-muted">
+                Overview of customers and their purchase history.
+            </p>
+        </div>
+        <a href="{% url 'export_customer_excel' %}" class="btn btn-success">
+    Export to Excel
+</a>
+        <div>
+
+            <button onclick="window.print()" class="btn btn-dark">
+                🖨 Print Report
+            </button>
+
+            <a href="{% url 'reports' %}" class="btn btn-outline-secondary">
+                ← Back to Reports
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Summary Cards -->
+
+    <div class="row mb-4">
+
+        <!-- Total Customers -->
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Total Customers
+                    </h6>
+
+                    <h2>
+                        {{ total_customers }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Total Orders -->
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Total Orders
+                    </h6>
+
+                    <h2>
+                        {{ total_orders }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Total Purchases -->
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h6 class="text-muted">
+                        Total Purchases
+                    </h6>
+
+                    <h2>
+                        ₹{{ total_purchases|floatformat:2 }}
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Customer Table -->
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <h5 class="mb-3">
+                Customer Purchase Summary
+            </h5>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover table-bordered">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>#</th>
+                            <th>Customer</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Total Orders</th>
+                            <th>Total Purchases</th>
+                            <th>Last Purchase</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for customer in customers %}
+
+                        <tr>
+
+                            <td>
+                                {{ forloop.counter }}
+                            </td>
+
+                            <td>
+                                <strong>
+                                    {{ customer.name }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ customer.phone|default:"-" }}
+                            </td>
+
+                            <td>
+                                {{ customer.email|default:"-" }}
+                            </td>
+
+                            <td>
+                                {{ customer.total_orders }}
+                            </td>
+
+                            <td>
+                                ₹{{ customer.total_purchases|default:0|floatformat:2 }}
+                            </td>
+
+                            <td>
+
+                                {% if customer.last_purchase %}
+
+                                    {{ customer.last_purchase|date:"d M Y" }}
+
+                                {% else %}
+
+                                    <span class="text-muted">
+                                        No purchases
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="7" class="text-center">
+
+                                No customers found.
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Print CSS -->
+
+<style>
+
+@media print {
+
+    nav,
+    .navbar,
+    button,
+    a {
+        display: none !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+
+    body {
+        font-size: 12px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
